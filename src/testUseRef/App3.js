@@ -1,19 +1,42 @@
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
-const App2 = () => {
-    const inputElement = useRef();
+/**
+  Tracking State Changes
+  The useRef Hook can also be used to keep track of previous state values.
 
-    const focusInput = () => {
-        inputElement.current.focus();
-        //document.getElementById("id1").focus();
-    };
+  This is because we are able to persist useRef values between renders.
 
+  Example:
+  Use useRef to keep track of previous state values:
+ */
+
+
+const App3 = () => {
+    const [inputValue, setInputValue] = useState("");
+    const previousInputValue = useRef("");
+
+    // // cDM, inputValue
+    useEffect(() => {
+        //console.log('previousInputValue.current = '+previousInputValue.current);
+        previousInputValue.current = inputValue;
+        console.log('previousInputValue.current = '+previousInputValue.current);
+    }, [inputValue]);
+    // useEffect(() => {
+    //     //console.log('previousInputValue.current = '+previousInputValue.current);
+    //     previousInputValue.current = inputValue;
+    //     console.log('previousInputValue.current = '+previousInputValue.current);
+    // });
     return (
         <>
-            <input type="text" ref={inputElement} />
-            <button onClick={focusInput}>Focus Input</button>
+            <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+            />
+            <h2>Current Value: {inputValue}</h2>
+            <h2>Previous Value: {previousInputValue.current}</h2>
         </>
     );
 }
 
-export default App2;
+export default App3;
